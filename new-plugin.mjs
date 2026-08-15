@@ -43,7 +43,7 @@ const packageJson = {
   license: "MIT",
   repository: {
     type: "git",
-    url: "git+https://github.com/YOUR_USERNAME/dsh-plugins.git",
+    url: "git+https://github.com/Jupiter1949/dsh-plugins.git",
     directory: `packages/${name}`,
   },
   engines: { node: ">=20.0.0" },

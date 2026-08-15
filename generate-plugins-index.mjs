@@ -16,7 +16,7 @@ for (const dir of fs.readdirSync(packagesDir)) {
   if (!fs.existsSync(pjPath)) continue;
   const pj = JSON.parse(fs.readFileSync(pjPath, "utf8"));
   const market = pj.dsh?.market ?? {};
-  const repoUrl = (pj.repository?.url ?? `https://github.com/YOUR_USERNAME/dsh-plugins`)
+  const repoUrl = (pj.repository?.url ?? `https://github.com/Jupiter1949/dsh-plugins`)
     .replace(/^git\+/, "")
     .replace(/\.git$/, "");
   const repoDir = pj.repository?.directory ?? `packages/${dir}`;

@@ -1,14 +1,14 @@
 {
   "schema": "dsh-plugins-index/1",
   "description": "DSH 插件市场索引：由 generate-plugins-index.mjs 从各 packages/*/package.json 自动生成，勿手动编辑。",
-  "generatedAt": "2026-08-15T14:57:32.518Z",
+  "generatedAt": "2026-08-15T14:59:46.390Z",
   "plugins": [
     {
       "name": "dsh-cot-smart",
       "description": "Dynamic CoT for DeepSeek Harness: set adapter reasoningEffort per request by input complexity — off for easy/short prompts, high/max for code, tables, math, or strong-reasoning asks. Saves thinking tokens without sacrificing quality.",
       "version": "1.0.0",
       "author": "",
-      "repository": "https://github.com/YOUR_USERNAME/dsh-plugins/tree/main/packages/cot-smart",
+      "repository": "https://github.com/Jupiter1949/dsh-plugins/tree/main/packages/cot-smart",
       "install": "dsh plugin --profile web add dsh-cot-smart",
       "keywords": [
         "deepseek",
