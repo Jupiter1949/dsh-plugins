@@ -22,8 +22,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Preflight + unit tests (every package)
-        run: pnpm -r check
+      - name: Unit tests (every package)
+        # Only node:test runs in CI — tools/preflight.mjs is host-local
+        # (validates the developer's local DSH profile, not portable).
+        run: pnpm -r test
 
       - name: Ensure plugins.json index is up to date
         run: |
