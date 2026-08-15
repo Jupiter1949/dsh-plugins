@@ -3,12 +3,20 @@
   "description": "Dynamic CoT for DeepSeek Harness: set adapter reasoningEffort per request by input complexity — off for easy/short prompts, high/max for code, tables, math, or strong-reasoning asks. Saves thinking tokens without sacrificing quality.",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "test": "node --test test/cot-smart.test.mjs",
+    "check": "node tools/preflight.mjs && npm run test"
+  },
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
   "exports": {
     ".": {
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
+    },
+    "./invariant": {
+      "types": "./lib/types/invariant.d.ts",
+      "default": "./lib/invariant.js"
     },
     "./package.json": "./package.json"
   },
@@ -18,6 +26,17 @@
     "README.md"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_USERNAME/dsh-plugins.git",
+    "directory": "packages/cot-smart"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@deepseek-ai/schemastery": "3.18.1"
   },
@@ -44,6 +63,10 @@
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
+    },
+    "market": {
+      "category": "reasoning",
+      "modes": ["web", "headless"]
     }
   }
 }

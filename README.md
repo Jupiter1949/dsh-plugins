@@ -64,6 +64,48 @@ git add -A && git commit -m "add <your-plugin-name>"
 
 > **DSH 是 fail-loud 设计**：任何「已启用」的插件加载失败都会让 `dsh web` 崩溃退出；只有 `disabled` 的插件失败是合法的。所以改插件务必"先自检、失败先 disable"。
 
+## 插件规范（对标官方 publish 规范）
+
+每个插件包遵循 DSH 官方插件发布规范：
+
+- `package.json` 必须声明 `"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }`（否则 `loadProfile` fail-loud）。
+- 发布元数据：`repository`（git 地址 + directory）、`engines.node >= 20`、`publishConfig.access: "public"`。
+- `exports` 含 `.`、`./invariant`、`./package.json` 三个入口。
+- 每个包带 `lib/invariant.js`（invariant companion）：导出 `name`/`inject: ["invariants"]`/`apply`，调用 `ctx.invariants.register(包名, installer)`。纯逻辑包用空 installer 并注释说明原因（见 `@deepseek-ai/dsh-invariants`）。
+- 插件配置用 `@deepseek-ai/schemastery`（不是 Zod：字段默认可选，无 `.optional()`）。
+
+## 市场索引（plugins.json）
+
+`plugins.json` 是插件市场清单（字段对齐 awesome-dsh-plugin / dsh-plugin-hub），**由脚本自动生成，勿手改**：
+
+```bash
+node generate-plugins-index.mjs   # 聚合各 packages/*/package.json -> plugins.json
+```
+
+- 每个包的 `dsh.market` 可声明 `author`/`category`/`modes`，用于市场展示。
+- CI 会校验 `plugins.json` 是否最新（防止手改漂移）。
+
+## 测试与质量门禁
+
+```bash
+pnpm -r check   # 每个包跑 preflight 自检 + node:test 单元测试
+```
+
+- 单测用 Node 内置 `node:test`（零依赖），放在 `packages/<name>/test/`。
+- 脚手架生成的包 `check` 脚本默认可用；写好逻辑后补测试用例即可。
+
+## CI 与发布
+
+- **check**（`.github/workflows/check.yml`）：push/PR 时跑 `pnpm -r check` + 校验 plugins.json 一致。
+- **publish**（`.github/workflows/publish.yml`）：打 `<包名>@<版本>` tag 时发布对应包到 npm（需配 `NPM_TOKEN` secret）。
+
+发布一个包：
+
+```bash
+git tag dsh-cot-smart@1.1.0 && git push origin dsh-cot-smart@1.1.0
+# CI 自动跑 check 后 npm publish
+```
+
 ## 命令
 
 ```bash

@@ -1,0 +1,38 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - "*@*" # e.g. dsh-cot-smart@1.1.0
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run checks before publishing
+        run: pnpm -r check
+
+      - name: Publish the tagged package
+        # Tag format: <package-name>@<version>, e.g. dsh-cot-smart@1.1.0
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          PKG="${TAG%@*}"
+          echo "Publishing package: $PKG"
+          node scripts/publish-package.mjs "$PKG"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

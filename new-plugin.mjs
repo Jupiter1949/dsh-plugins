@@ -34,9 +34,20 @@ const packageJson = {
   type: "module",
   main: "lib/index.js",
   types: "lib/types/index.d.ts",
-  exports: { ".": { types: "./lib/types/index.d.ts", default: "./lib/index.js" }, "./package.json": "./package.json" },
+  exports: {
+    ".": { types: "./lib/types/index.d.ts", default: "./lib/index.js" },
+    "./invariant": { types: "./lib/types/invariant.d.ts", default: "./lib/invariant.js" },
+    "./package.json": "./package.json",
+  },
   files: ["lib", "cordis.patch.yml", "README.md"],
   license: "MIT",
+  repository: {
+    type: "git",
+    url: "git+https://github.com/YOUR_USERNAME/dsh-plugins.git",
+    directory: `packages/${name}`,
+  },
+  engines: { node: ">=20.0.0" },
+  publishConfig: { access: "public" },
   dependencies: { "@deepseek-ai/schemastery": "3.18.1" },
   peerDependencies: { "@deepseek-ai/cordis": ">=4.0.0", "@deepseek-ai/dsh-agent": "*", "@deepseek-ai/dsh-llm": "*" },
   peerDependenciesMeta: { "@deepseek-ai/cordis": { optional: true }, "@deepseek-ai/dsh-agent": { optional: true }, "@deepseek-ai/dsh-llm": { optional: true } },
@@ -91,6 +102,36 @@ export declare const Config: z.ZodType<{ enabled: boolean }>;
 export declare function apply(ctx: Context, config: { enabled: boolean }): void;
 `);
 console.log("  lib/types/index.d.ts");
+
+// ---- lib/invariant.js + lib/types/invariant.d.ts ----
+fs.writeFileSync(path.join(pkgDir, "lib", "invariant.js"),
+`// Package-owned invariant companion for \`${name}\`.
+// @module ${name}/invariant
+//
+// No runtime invariant: this scaffold plugin owns no mutable state or
+// cross-plugin event relationship. Replace this with real checks if you add
+// state or an event protocol (see @deepseek-ai/dsh-invariants README).
+
+const PACKAGE_NAME = "${name}";
+
+export const name = "${name}-invariant";
+export const inject = ["invariants"];
+
+const install = () => {};
+
+export const apply = (ctx) =>
+  Promise.resolve(ctx.invariants.register(PACKAGE_NAME, install));
+`);
+console.log("  lib/invariant.js");
+
+fs.writeFileSync(path.join(pkgDir, "lib", "types", "invariant.d.ts"),
+`import type { Context } from "@deepseek-ai/cordis";
+
+export declare const name: "${name}-invariant";
+export declare const inject: string[];
+export declare const apply: (ctx: Context) => Promise<() => void>;
+`);
+console.log("  lib/types/invariant.d.ts");
 
 // ---- README.md ----
 fs.writeFileSync(path.join(pkgDir, "README.md"),
