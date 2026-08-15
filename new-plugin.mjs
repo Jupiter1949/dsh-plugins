@@ -49,7 +49,7 @@ const packageJson = {
   engines: { node: ">=20.0.0" },
   publishConfig: { access: "public" },
   dependencies: { "@deepseek-ai/schemastery": "3.18.1" },
-  peerDependencies: { "@deepseek-ai/cordis": ">=4.0.0", "@deepseek-ai/dsh-agent": "*", "@deepseek-ai/dsh-llm": "*" },
+  peerDependencies: { "@deepseek-ai/cordis": "4.0.1", "@deepseek-ai/dsh-agent": "0.1.0-rc.6", "@deepseek-ai/dsh-llm": "0.0.1-rc.1" },
   peerDependenciesMeta: { "@deepseek-ai/cordis": { optional: true }, "@deepseek-ai/dsh-agent": { optional: true }, "@deepseek-ai/dsh-llm": { optional: true } },
   keywords: ["deepseek", "harness", "dsh", "plugin", name],
   dsh: { bundle: { patch: "./cordis.patch.yml" } },
