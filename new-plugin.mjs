@@ -37,7 +37,7 @@ const packageJson = {
   exports: { ".": { types: "./lib/types/index.d.ts", default: "./lib/index.js" }, "./package.json": "./package.json" },
   files: ["lib", "cordis.patch.yml", "README.md"],
   license: "MIT",
-  dependencies: {},
+  dependencies: { "@deepseek-ai/schemastery": "3.18.1" },
   peerDependencies: { "@deepseek-ai/cordis": ">=4.0.0", "@deepseek-ai/dsh-agent": "*", "@deepseek-ai/dsh-llm": "*" },
   peerDependenciesMeta: { "@deepseek-ai/cordis": { optional: true }, "@deepseek-ai/dsh-agent": { optional: true }, "@deepseek-ai/dsh-llm": { optional: true } },
   keywords: ["deepseek", "harness", "dsh", "plugin", name],
@@ -140,5 +140,7 @@ if (fs.existsSync(toolsSrc)) {
 }
 
 console.log(`\n✅ Created package: ${win(pkgDir)}`);
-console.log("Next: edit lib/index.js with your logic, then");
-console.log("  dsh plugin --profile web add link:" + win(pkgDir));
+console.log("Next:");
+console.log("  1. pnpm install   (links the new package + installs schemastery)");
+console.log("  2. edit lib/index.js with your logic");
+console.log("  3. dsh plugin --profile web add link:" + win(pkgDir));
