@@ -1,6 +1,6 @@
 # dsh-cot-smart: dynamic Chain-of-Thought for DeepSeek Harness.
 # Inserted into the profile's composition when installed via
-#   dsh plugin --profile web add link:C:/Users/Jupiter/projects/dsh-cot-smart
+#   dsh plugin --profile web add link:C:/Users/Jupiter/projects/dsh-plugins/packages/cot-smart
 # The plugin row is resolved by package name through the profile's node_modules.
 - insert:
     - id: cot-smart

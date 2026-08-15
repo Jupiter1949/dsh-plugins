@@ -39,11 +39,11 @@ Hook DSH 的 `agent/request` waterfall（见 `@deepseek-ai/dsh-agent`），在 `
 ```bash
 # 0. 前提：本插件以 link 方式挂外部目录，必须先保证插件自带依赖
 #    （见下方「故障排查 → 外部 link: 插件必须自带依赖」），否则 dsh 启动报 ERR_MODULE_NOT_FOUND
-cd C:\Users\Jupiter\projects\dsh-cot-smart
+cd C:\Users\Jupiter\projects\dsh-plugins\packages\cot-smart
 pnpm install
 
 # 1. 从插件工作区自链接安装
-dsh plugin --profile web add link:C:/Users/Jupiter/projects/dsh-cot-smart
+dsh plugin --profile web add link:C:/Users/Jupiter/projects/dsh-plugins/packages/cot-smart
 
 # 2. 重启 web 使插件生效
 # 停止当前 dsh web，再执行：
@@ -99,8 +99,8 @@ dsh web 起不来/不知原因 →  tools\disable.ps1 → 重启(系统正常进
 插件会往 `logFile` 配置的路径（当前 `C:\Users\Jupiter\dsh-cot-smart.log`）**追加**每次决策（`时间 target=off/high/max score=X(标签) len=N`）。查看：
 
 ```bash
-node C:\Users\Jupiter\projects\dsh-cot-smart\watch.js        # 最近30条
-node C:\Users\Jupiter\projects\dsh-cot-smart\watch.js 100    # 最近100条
+node C:\Users\Jupiter\projects\dsh-plugins\packages\cot-smart\watch.js        # 最近30条
+node C:\Users\Jupiter\projects\dsh-plugins\packages\cot-smart\watch.js 100    # 最近100条
 ```
 
 对照判断是否合理：简单→`off`、中等→`high`、超复杂→`max`。不合理就把相关行发给维护者调阈值。
@@ -119,7 +119,7 @@ Cannot find package '@deepseek-ai/schemastery' imported from ...\dsh-cot-smart\l
 **修复**：在插件目录内安装它 import 的包（版本对齐 DSH 内部的），并放进 `dependencies`（不要只放 peerDependencies）：
 
 ```bash
-cd C:\Users\Jupiter\projects\dsh-cot-smart
+cd C:\Users\Jupiter\projects\dsh-plugins\packages\cot-smart
 pnpm add "@deepseek-ai/schemastery@3.18.1"   # 版本 = DSH 内部版本，见 ~/AppData/Roaming/npm/node_modules/@deepseek-ai/dsh/node_modules/@deepseek-ai/schemastery/package.json
 pnpm install                                  # 顺带解析 peer 依赖，使插件自足
 ```

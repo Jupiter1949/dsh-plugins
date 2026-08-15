@@ -32,7 +32,7 @@ foreach ($k in $map.Keys) {
   $src = Join-Path $bakDir $k
   if (Test-Path $src) { Copy-Item $src $map[$k] -Force; Write-Host ("  restored " + $k) }
 }
-$plugin = "C:\Users\Jupiter\projects\dsh-cot-smart"
+$plugin = "C:\Users\Jupiter\projects\dsh-plugins\packages\cot-smart"
 if (Test-Path (Join-Path $bakDir "plugin-lib")) { Copy-Item -Recurse -Force (Join-Path $bakDir "plugin-lib") $plugin; Write-Host "  restored plugin lib" }
 if (Test-Path (Join-Path $bakDir "plugin-package.json")) { Copy-Item (Join-Path $bakDir "plugin-package.json") (Join-Path $plugin "package.json") -Force; Write-Host "  restored plugin package.json" }
 if (Test-Path (Join-Path $bakDir "plugin-cordis.patch.yml")) { Copy-Item (Join-Path $bakDir "plugin-cordis.patch.yml") (Join-Path $plugin "cordis.patch.yml") -Force; Write-Host "  restored plugin cordis.patch.yml" }

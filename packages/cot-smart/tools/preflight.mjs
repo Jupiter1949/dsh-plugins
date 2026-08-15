@@ -30,7 +30,7 @@ try {
 
 // 2. 插件 JS 可导入
 try {
-  const mod = await import(pathToFileURL("C:/Users/Jupiter/projects/dsh-cot-smart/lib/index.js").href);
+  const mod = await import(pathToFileURL("C:/Users/Jupiter/projects/dsh-plugins/packages/cot-smart/lib/index.js").href);
   console.log(`✅ 插件导入 OK: ${Object.keys(mod).join(",")}`);
   // 3. Config 可解析（用默认）
   const cfg = mod.Config({});

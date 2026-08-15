@@ -19,7 +19,7 @@ $files = @(
   @{ src=Join-Path $dshHome "settings.yaml"; name="settings.yaml" }
 )
 foreach ($f in $files) { if (Test-Path $f.src) { Copy-Item $f.src (Join-Path $bakDir $f.name) -Force } }
-$plugin = "C:\Users\Jupiter\projects\dsh-cot-smart"
+$plugin = "C:\Users\Jupiter\projects\dsh-plugins\packages\cot-smart"
 if (Test-Path (Join-Path $plugin "lib")) { Copy-Item -Recurse (Join-Path $plugin "lib") (Join-Path $bakDir "plugin-lib") }
 Copy-Item (Join-Path $plugin "package.json") (Join-Path $bakDir "plugin-package.json") -Force
 Copy-Item (Join-Path $plugin "cordis.patch.yml") (Join-Path $bakDir "plugin-cordis.patch.yml") -Force
@@ -31,4 +31,4 @@ foreach ($d in $toDelete) { Remove-Item -Recurse -Force $d.FullName; Write-Host 
 
 Write-Host ("backup done -> " + $bakDir)
 Write-Host ("kept newest " + $keep + "; pruned " + $toDelete.Count + " old")
-Write-Host ("rollback: powershell -File C:\Users\Jupiter\projects\dsh-cot-smart\tools\rollback.ps1 " + $stamp)
+Write-Host ("rollback: powershell -File C:\Users\Jupiter\projects\dsh-plugins\packages\cot-smart\tools\rollback.ps1 " + $stamp)
