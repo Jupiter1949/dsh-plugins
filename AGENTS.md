@@ -50,6 +50,21 @@ dsh plugin --profile web add link:...  # 把插件装进 DSH profile
 3. 🔴 红级操作执行前必须先具备**回滚能力**（git 已提交可回退 / 备份 / 明确恢复方法），否则先做备份再操作。
 4. 不确定级别 → 按更严一级处理（宁黄勿绿、宁红勿黄），并给一句「为什么拿不准」。
 
+### 红级操作对照表（一眼可判）
+
+> 命中下表任一行 → **必是红级**，停下列等用户「同意」才执行，且执行前先具备回滚能力。没命中 → 按绿/黄继续。
+
+| 类别 | dsh-plugins 里的具体例子 | 判断口诀 |
+|------|--------------------------|----------|
+| **碰远端/发布** | `git push`、`npm publish`、发 tag、从 GitHub 拉取覆盖本地 | 「离开本项目就算红」 |
+| **删除/破坏** | 删 `packages/*` 下多个文件、`rm -rf` node_modules、清除已有插件包、覆盖 `package.json` 不保留原稿 | 「没了找不回就是红」 |
+| **改关键配置** | 改 `~/.dsh/profiles/web`（DSH link）、`settings.yaml`、`config.toml`、pnpm-workspace 大改 | 「动 DSH 设就算红」 |
+| **写本项目外新位置** | 建新的 `projects\` 项目、写别的项目目录、`AppData` 全局、`~/.npmrc` 等 | 「没去过的地方算红」 |
+| **不可逆命令** | `npm unpublish`、破坏 package-lock 后无 lockfile 重装、格式化/清数据文件 | 「退不回去算红」 |
+| **影响已发布包** | 改已 `npm publish` 过包的 version/行为（涉及线上） | 「动了已发版算红」 |
+
+**反向口诀（绿色）**：只在 `packages/` 内 + 可回滚 + 不 push/publish = 通常绿灯。
+
 ## 授权纪律（硬性）
 
 1. 创建任何新文件/项目前，先判断落盘位置——在本项目 `packages/` 内 → 绿/黄；在 `projects\` 其他位置、`~/.dsh`、`AppData` → 越界，需先说明。
