@@ -38,7 +38,6 @@ plugins.sort((a, b) => a.name.localeCompare(b.name));
 const index = {
   schema: "dsh-plugins-index/1",
   description: "DSH 插件市场索引：由 generate-plugins-index.mjs 从各 packages/*/package.json 自动生成，勿手动编辑。",
-  generatedAt: new Date().toISOString(),
   plugins,
 };
 

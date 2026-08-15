@@ -1,7 +1,6 @@
 {
   "schema": "dsh-plugins-index/1",
   "description": "DSH 插件市场索引：由 generate-plugins-index.mjs 从各 packages/*/package.json 自动生成，勿手动编辑。",
-  "generatedAt": "2026-08-15T14:59:46.390Z",
   "plugins": [
     {
       "name": "dsh-cot-smart",
