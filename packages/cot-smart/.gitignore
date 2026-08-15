@@ -1,0 +1,12 @@
+# dependencies
+node_modules/
+
+# logs / transient test artifacts
+*.log
+.boot-*
+pre-rollback-*
+plugin-lib/
+
+# editor
+.vscode/
+.idea/
