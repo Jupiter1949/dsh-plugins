@@ -20,7 +20,7 @@ scripts/
 ```
 
 Telemetry (append-only CSVs under `~/.dsh/logs/`):
-- `distiller.csv`         timestamp,tool,rawChars,outChars,ratio,ms,status
+- `distiller.csv`         timestamp,tool,rawChars,outChars,ratio,ms,status,spentTokens,estAvertedTokens,netTokens
 - `router.csv`            timestamp,kind,provider,model,reasoningEffort,inputChars,msgCount,outputChars,finish
 - `router-decisions.csv`  timestamp,len,gate,decision,mode(dryrun|live),action
 
@@ -37,7 +37,7 @@ Telemetry (append-only CSVs under `~/.dsh/logs/`):
 ## Frozen parameters (replay-calibrated 2026-08-17, see Research archive)
 
 - model-router: KEYWORD_FLOOR=200; 9 FORCE_PRO keywords; deep-logic(>=2 words)+len>5000; verbs(>=2)+len>8000; default flash; same session reuses one decision; strips // and /* */ comments before matching.
-- result-distiller: MIN_CONTENT_CHARS=2000, RAW_HEAD_CHARS=400, FLASH_INPUT_CAP=12000, flash maxTokens=600.
+- result-distiller: MIN_CONTENT_CHARS=2000, RAW_HEAD_CHARS=400, FLASH_INPUT_CAP=12000, flash maxTokens=600, CHARS_PER_TOKEN=3. Telemetry netTokens is a SINGLE-READ (R=1) conservative floor; measured break-even needs ~2 re-reads of the thin copy (2026-08-17 telemetry: 38/38 distillations were net-negative at R=1).
 
 ## Verification commands
 

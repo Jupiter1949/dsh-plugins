@@ -9,7 +9,13 @@
 // reads the thin version.
 //
 // Telemetry: one CSV row appended per distillation attempt to
-//   <home>/logs/distiller.csv  (timestamp,tool,rawChars,outChars,ratio,ms,status)
+//   <home>/logs/distiller.csv
+//   (timestamp,tool,rawChars,outChars,ratio,ms,status,spentTokens,estAvertedTokens,netTokens)
+//   spentTokens        = real flash cost from usage (inputTokens+outputTokens); ground truth.
+//   estAvertedTokens   = {charAverted / CHARS_PER_TOKEN}; SINGLE-READ model (R=1).
+//   netTokens          = estAvertedTokens - spentTokens; positive => net win at R=1.
+//   Real savings scale with re-reads (any continued session reads the thin copy on every
+//   compaction, R>=1), so netTokens is a CONSERVATIVE floor, not an upper bound.
 
 import { appendFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
@@ -21,6 +27,7 @@ export const inject = ["tools", "llm"];
 const MIN_CONTENT_CHARS = 2000; // below this a flash call is not worth it
 const RAW_HEAD_CHARS = 400; // raw head kept beside the summary
 const FLASH_INPUT_CAP = 12000; // raw chars fed to flash per distillation
+const CHARS_PER_TOKEN = 3; // conservative BPE estimate for mixed CJK/Latin text
 
 function csvPath() {
   const home = process.env.DSH_HOME && process.env.DSH_HOME.length > 0
@@ -60,7 +67,7 @@ export function apply(ctx) {
     });
 
     if (!outcome.ok) {
-      logCsv([new Date().toISOString(), exec.name, raw.length, "", "", Date.now() - startedAt, "fail:" + outcome.reason]);
+      logCsv([new Date().toISOString(), exec.name, raw.length, "", "", Date.now() - startedAt, "fail:" + outcome.reason, "", "", ""]);
       return decision;
     }
 
@@ -68,10 +75,17 @@ export function apply(ctx) {
       "[distilled:" + exec.name + "]\n" + outcome.text + "\n\n" +
       "--- raw head (" + RAW_HEAD_CHARS + " chars) ---\n" + raw.slice(0, RAW_HEAD_CHARS);
     const outChars = text.length;
+    const spent = outcome.usage
+      ? (outcome.usage.inputTokens || 0) + (outcome.usage.outputTokens || 0)
+      : "";
+    const charAverted = raw.length - outChars;
+    const estAverted = charAverted > 0 ? Math.round(charAverted / CHARS_PER_TOKEN) : 0;
+    const net = (spent !== "" && estAverted !== 0) ? estAverted - spent : "";
     logCsv([new Date().toISOString(), exec.name, raw.length, outChars,
       (outChars / raw.length).toFixed(3), Date.now() - startedAt,
-      "ok:" + outcome.finishKind]);
-    console.log("[result-distiller] " + exec.name + ": " + raw.length + " -> " + outChars + " chars");
+      "ok:" + outcome.finishKind, spent, estAverted, net]);
+    console.log("[result-distiller] " + exec.name + ": " + raw.length + " -> " + outChars + " chars" +
+      (spent !== "" ? ("  net=" + net + " tok (spent=" + spent + ")") : ""));
     return { kind: "accept", content: [{ type: "text", text }] };
   });
 }
