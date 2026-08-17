@@ -1,0 +1,24 @@
+{
+  "name": "dsh-result-distiller",
+  "version": "0.2.0",
+  "description": "Distill large tool results with deepseek-v4-flash before they enter the model-visible session log. Hooks tools/post-execute; pure add-on: any failure silently keeps the raw result. Appends one CSV row per distillation to %DSH_HOME%/logs/distiller.csv.",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": ["lib", "cordis.patch.yml", "README.md"],
+  "license": "MIT",
+  "keywords": ["deepseek", "dsh", "plugin", "distillation", "context", "tokens"],
+  "dependencies": {
+    "dsh-flash-kit": "workspace:^"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": { "optional": true }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
