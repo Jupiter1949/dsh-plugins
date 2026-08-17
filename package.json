@@ -5,5 +5,8 @@
   "scripts": {
     "build": "pnpm -r build",
     "check": "pnpm -r check"
+  },
+  "devDependencies": {
+    "fzstd": "^0.1.1"
   }
 }
