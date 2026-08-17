@@ -53,3 +53,11 @@ node scripts/router-replay.mjs --days 30 --ratio 10                # recalibrate
 Done: result-distiller, model-router, router-probe v0.2 (2/8 of the V1.0 plan).
 Next (after 72h telemetry): intent-structurer (agent/pre-step, outputs goal/constraints/successCriteria/ambiguities; suggestedModel is a FEATURE only - model decisions belong solely to model-router), then constraint-critic (agent/turn-stopping; flowchart in Research archive).
 Human archive: `C:\Users\Jupiter\Documents\Research\deepseek-harness\` (design review, replay report, implementation checklist with all incident post-mortems).
+## Self-hosting rules (this repo is maintained BY dsh itself)
+
+- Rollback anchor: git tag `takeover-anchor-20260817`. Any broken state: `git reset --hard takeover-anchor-20260817`.
+- After ANY edit under `packages/*/lib/`: run `node --check <file>`, then the smoke commands above before committing.
+- Frozen zone: model-router gate parameters and result-distiller thresholds change ONLY with a fresh `router-replay.mjs` run cited in the commit message. Do not hand-tune numbers.
+- One feature = one commit, conventional messages (`feat(scope): ...`). Keep the working tree clean; never commit CSVs under `~/.dsh/logs`.
+- Telemetry schema changes (CSV columns) MUST update the field lists in this file in the same commit.
+- When tasks need a model call, go through `dsh-flash-kit` callFlash like everyone else.
