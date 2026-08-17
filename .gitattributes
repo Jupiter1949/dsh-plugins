@@ -1,0 +1,25 @@
+# Normalize line endings to LF in the repo, regardless of core.autocrlf.
+# Source / text files: LF on checkin, keep LF on checkout (no CRLF churn).
+
+* text=auto
+
+*.js     text eol=lf
+*.mjs    text eol=lf
+*.cjs    text eol=lf
+*.ts     text eol=lf
+*.json   text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.md     text eol=lf
+*.patch  text eol=lf
+
+*.ps1    text eol=crlf
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+
+# Binary files stay untouched.
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.zip    binary
