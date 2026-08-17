@@ -1,0 +1,21 @@
+{
+  "name": "dsh-router-probe",
+  "version": "0.1.0",
+  "description": "Observation-only probe on llm/stream for the upcoming model-router. Logs every model call (loop or hand-built) to <home>/logs/router.csv: provider, model, reasoningEffort, input chars, message count. Never modifies any request.",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": ["lib", "cordis.patch.yml", "README.md"],
+  "license": "MIT",
+  "keywords": ["deepseek", "dsh", "plugin", "observability", "router"],
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": { "optional": true }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

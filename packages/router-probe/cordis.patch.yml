@@ -1,0 +1,3 @@
+- insert:
+  - id: router-probe
+    name: dsh-router-probe
