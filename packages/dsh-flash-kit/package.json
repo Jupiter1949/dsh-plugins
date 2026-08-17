@@ -1,0 +1,9 @@
+{
+  "name": "dsh-flash-kit",
+  "version": "0.1.0",
+  "description": "Shared one-shot deepseek-v4-flash caller for dsh plugins. Forces reasoningEffort:'off' (the agent-level default does NOT apply to hand-built calls) and returns structured outcomes instead of throwing.",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": ["lib"],
+  "license": "MIT"
+}
