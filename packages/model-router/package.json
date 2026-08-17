@@ -1,0 +1,24 @@
+{
+  "name": "dsh-model-router",
+  "version": "1.0.0",
+  "description": "Whitelist-gate model router on agent/request. Defaults every request to flash; upgrades to pro only on replay-calibrated gates (keyword+length floor, deep-logic+long, multi-verb+very-long). Supports dryRun to log decisions without switching.",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": ["lib", "cordis.patch.yml", "README.md"],
+  "license": "MIT",
+  "keywords": ["deepseek", "dsh", "plugin", "router", "cost"],
+  "dependencies": {
+    "@deepseek-ai/schemastery": ">=3.18.1"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": { "optional": true }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
